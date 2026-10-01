@@ -961,7 +961,7 @@ describe("settingsStore AI API key normalization", () => {
     expect(AI_PROVIDER_PRESETS.openrouter).toMatchObject({
       provider: "openrouter",
       endpoint: "https://openrouter.ai/api/v1",
-      model: "openai/gpt-4o-mini",
+      model: "deepseek/deepseek-v4.1-flash",
       apiStyle: "completions",
       authMethod: "bearer",
       requiresApiKey: true,
