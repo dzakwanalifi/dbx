@@ -961,7 +961,7 @@ describe("settingsStore AI API key normalization", () => {
     expect(AI_PROVIDER_PRESETS.openrouter).toMatchObject({
       provider: "openrouter",
       endpoint: "https://openrouter.ai/api/v1",
-      model: "openai/gpt-5.6-luna",
+      model: "openrouter/auto",
       apiStyle: "completions",
       authMethod: "bearer",
       requiresApiKey: true,

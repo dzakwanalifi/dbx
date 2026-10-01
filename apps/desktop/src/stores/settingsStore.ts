@@ -371,7 +371,7 @@ export const AI_PROVIDER_PRESETS: Record<AiProvider, AiProviderPreset> = {
     iconSlug: "openrouter",
     provider: "openrouter",
     endpoint: "https://openrouter.ai/api/v1",
-    model: "openai/gpt-5.6-luna",
+    model: "openrouter/auto",
     apiStyle: "completions",
     authMethod: "bearer",
     requiresApiKey: true,

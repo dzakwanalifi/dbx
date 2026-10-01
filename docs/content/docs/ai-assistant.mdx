@@ -27,7 +27,7 @@ DBX includes presets for:
 
 Compatible and custom configurations can set the endpoint, model, API style, authentication method, proxy, context window, and extra HTTP headers. API styles include OpenAI-style completions, the Responses API, and Anthropic Messages. When supported, DBX discovers models and filters out endpoints that are not suitable for assistant or Agent use.
 
-OpenRouter routing suffixes such as `:nitro` (fastest providers), `:floor` (cheapest providers), and `:exacto` (tool-calling reliability) are not listed by the models API. Add them as a manual model ID, for example `openai/gpt-5.6-luna:floor`.
+The OpenRouter preset defaults to `openrouter/auto`, which lets OpenRouter pick a current model per prompt, so no model name is hard-coded. Reasoning effort is sent as OpenRouter's unified `reasoning.effort` field. Routing suffixes such as `:nitro` (fastest providers), `:floor` (cheapest providers), and `:exacto` (tool-calling reliability) are not listed by the models API; add them to any model ID manually, for example `openai/gpt-5.6-luna:floor`. Attribution or session headers (`X-OpenRouter-Title`, `x-session-id`) go in the extra HTTP headers, and provider routing or Auto Router limits (allowed models, cost tier) can be saved as defaults in your OpenRouter workspace settings.
 
 ### Local CLI Agents
 

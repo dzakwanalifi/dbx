@@ -293,9 +293,8 @@ pub fn apply_runtime_effort(body: &mut Value, config: &AiConfig) {
         AiProvider::Qwen => apply_qwen_effort(object, selection),
         AiProvider::Zhipu | AiProvider::Ollama => apply_openai_effort(object, &config.api_style, selection),
         AiProvider::MiniMax => apply_minimax_effort(object, selection),
-        AiProvider::Openai | AiProvider::OpenaiCompatible | AiProvider::OpenRouter => {
-            apply_openai_effort(object, &config.api_style, selection)
-        }
+        AiProvider::OpenRouter => apply_openrouter_effort(object, selection),
+        AiProvider::Openai | AiProvider::OpenaiCompatible => apply_openai_effort(object, &config.api_style, selection),
         AiProvider::Custom => {
             if config.api_style == AiApiStyle::AnthropicMessages {
                 apply_claude_effort(object, selection);
@@ -327,6 +326,14 @@ fn apply_openai_effort(object: &mut Map<String, Value>, api_style: &AiApiStyle, 
         } else {
             object.insert("reasoning_effort".to_string(), Value::String(value));
         }
+    }
+}
+
+/// OpenRouter normalizes reasoning control across upstream providers through
+/// the unified `reasoning` object, for both Chat Completions and Responses.
+fn apply_openrouter_effort(object: &mut Map<String, Value>, selection: &AiEffortSelection) {
+    if let Some(value) = effort_string(selection) {
+        object.insert("reasoning".to_string(), json!({ "effort": value }));
     }
 }
 
@@ -672,6 +679,21 @@ mod tests {
         apply_runtime_effort(&mut body, &config);
         assert_eq!(body["thinking"]["type"], "enabled");
         assert_eq!(body["reasoning_effort"], "max");
+    }
+
+    #[test]
+    fn openrouter_effort_uses_unified_reasoning_object() {
+        let mut config = config(AiProvider::OpenRouter, "openrouter/auto");
+        config.runtime_effort = Some(AiEffortSelection::Text("high".to_string()));
+        let mut body = json!({});
+        apply_runtime_effort(&mut body, &config);
+        assert_eq!(body["reasoning"]["effort"], "high");
+        assert!(body.get("reasoning_effort").is_none());
+
+        config.api_style = AiApiStyle::Responses;
+        let mut body = json!({});
+        apply_runtime_effort(&mut body, &config);
+        assert_eq!(body["reasoning"]["effort"], "high");
     }
 
     #[test]

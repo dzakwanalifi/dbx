@@ -1482,6 +1482,9 @@ fn apply_chat_completion_thinking_toggle(body: &mut serde_json::Value, config: &
         // Ollama's OpenAI-compatible API uses reasoning_effort instead of
         // forwarding provider-specific chat template arguments.
         body["reasoning_effort"] = json!("none");
+    } else if matches!(config.provider, AiProvider::OpenRouter) {
+        // OpenRouter exposes one `reasoning` object for every upstream provider.
+        body["reasoning"] = json!({ "effort": "none" });
     } else if !is_kimi_model(&config.model) {
         body["extra_body"] = json!({
             "chat_template_kwargs": { "enable_thinking": false }
@@ -7832,6 +7835,19 @@ mod tests {
             assert!(body.get("extra_body").is_none(), "{model}");
             assert!(body.get("reasoning_effort").is_none(), "{model}");
         }
+    }
+
+    #[test]
+    fn openrouter_thinking_toggle_uses_unified_reasoning_object() {
+        let mut config = test_config(AiProvider::OpenRouter);
+        config.enable_thinking = false;
+        let mut body = serde_json::json!({ "model": "openrouter/auto" });
+
+        apply_chat_completion_thinking_toggle(&mut body, &config);
+
+        assert_eq!(body["reasoning"]["effort"], "none");
+        assert!(body.get("extra_body").is_none());
+        assert!(body.get("reasoning_effort").is_none());
     }
 
     #[test]

@@ -993,7 +993,7 @@ test("AI provider presets include common hosted and local providers", () => {
   assert.equal(AI_PROVIDER_PRESETS.zhipu.requiresApiKey, true);
   assert.equal(AI_PROVIDER_PRESETS.zhipu.iconSlug, "zhipu");
   assert.equal(AI_PROVIDER_PRESETS.openrouter.endpoint, "https://openrouter.ai/api/v1");
-  assert.equal(AI_PROVIDER_PRESETS.openrouter.model, "openai/gpt-5.6-luna");
+  assert.equal(AI_PROVIDER_PRESETS.openrouter.model, "openrouter/auto");
   assert.equal(AI_PROVIDER_PRESETS.openrouter.authMethod, "bearer");
   assert.equal(AI_PROVIDER_PRESETS.openrouter.requiresApiKey, true);
   assert.equal(AI_PROVIDER_PRESETS.openrouter.iconSlug, "openrouter");

@@ -27,7 +27,7 @@ DBX 内置以下配置预设：
 
 兼容或自定义配置可以设置端点、模型、API 风格、认证方式、代理、上下文窗口和额外 HTTP 请求头。API 风格包括 OpenAI 风格 completions、Responses API 和 Anthropic Messages。供应商支持时，DBX 会读取模型列表并过滤掉不适合对话/Agent 的模型。
 
-OpenRouter 的路由后缀（`:nitro` 选最快的供应商，`:floor` 选最便宜的供应商，`:exacto` 偏向工具调用可靠性）不会出现在模型列表中。请手动填写模型 ID，例如 `openai/gpt-5.6-luna:floor`。
+OpenRouter 预设默认使用 `openrouter/auto`，由 OpenRouter 按提示词选择当前合适的模型，因此不会写死具体模型名。推理强度以 OpenRouter 统一的 `reasoning.effort` 字段发送。路由后缀（`:nitro` 选最快的供应商，`:floor` 选最便宜的供应商，`:exacto` 偏向工具调用可靠性）不会出现在模型列表中，可手动追加到任意模型 ID，例如 `openai/gpt-5.6-luna:floor`。归因或会话请求头（`X-OpenRouter-Title`、`x-session-id`）可填入额外 HTTP 请求头；供应商路由和 Auto Router 的限制（允许的模型、成本档位）可在 OpenRouter 工作区设置中保存为默认值。
 
 ### 本地 CLI Agent
 
