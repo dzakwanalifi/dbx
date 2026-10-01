@@ -366,6 +366,16 @@ export const AI_PROVIDER_PRESETS: Record<AiProvider, AiProviderPreset> = {
     authMethod: "bearer",
     requiresApiKey: true,
   },
+  openrouter: {
+    label: "OpenRouter",
+    iconSlug: "openrouter",
+    provider: "openrouter",
+    endpoint: "https://openrouter.ai/api/v1",
+    model: "openai/gpt-4o-mini",
+    apiStyle: "completions",
+    authMethod: "bearer",
+    requiresApiKey: true,
+  },
   ollama: {
     label: "Ollama",
     iconSlug: "ollama",
@@ -661,6 +671,7 @@ function normalizeAiConfigItem(config: AiConfigItem): AiConfigItem {
 function inferAiProviderFromConfig(config: Partial<AiConfig> | null | undefined): AiProvider {
   const endpoint = config?.endpoint?.toLowerCase() ?? "";
   const model = config?.model?.toLowerCase() ?? "";
+  if (endpoint.includes("openrouter.ai")) return "openrouter";
   if (endpoint.includes("deepseek") || model.includes("deepseek")) return "deepseek";
   if (endpoint.includes("moonshot") || endpoint.includes("kimi.com") || model.includes("kimi")) return "kimi";
   if (endpoint.includes("dashscope") || endpoint.includes("aliyuncs") || model.includes("qwen")) return "qwen";

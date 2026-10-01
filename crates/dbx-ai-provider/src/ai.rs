@@ -90,6 +90,8 @@ pub enum AiProvider {
     Qwen,
     Zhipu,
     MiniMax,
+    #[serde(rename = "openrouter")]
+    OpenRouter,
     Ollama,
     #[serde(rename = "openai-compatible")]
     OpenaiCompatible,
@@ -124,6 +126,7 @@ impl AiProvider {
             AiProvider::Qwen => "qwen",
             AiProvider::Zhipu => "zhipu",
             AiProvider::MiniMax => "minimax",
+            AiProvider::OpenRouter => "openrouter",
             AiProvider::Ollama => "ollama",
             AiProvider::OpenaiCompatible => "openai-compatible",
             AiProvider::ClaudeCodeCli => "claude-code-cli",
@@ -947,6 +950,7 @@ pub fn resolve_endpoint(config: &AiConfig) -> String {
         | AiProvider::Qwen
         | AiProvider::Zhipu
         | AiProvider::MiniMax
+        | AiProvider::OpenRouter
         | AiProvider::Ollama
         | AiProvider::OpenaiCompatible
         | AiProvider::Custom => {
@@ -990,6 +994,7 @@ fn uses_openai_style_api(config: &AiConfig) -> bool {
                 | AiProvider::Kimi
                 | AiProvider::Qwen
                 | AiProvider::MiniMax
+                | AiProvider::OpenRouter
                 | AiProvider::Ollama
                 | AiProvider::OpenaiCompatible
                 | AiProvider::Custom
@@ -1750,6 +1755,7 @@ fn provider_requires_api_key(provider: &AiProvider) -> bool {
             | AiProvider::Qwen
             | AiProvider::Zhipu
             | AiProvider::MiniMax
+            | AiProvider::OpenRouter
     )
 }
 
@@ -2241,6 +2247,7 @@ pub async fn list_models_core(config: &AiConfig) -> Result<Vec<AiModelInfo>, Str
                 | AiProvider::Qwen
                 | AiProvider::Zhipu
                 | AiProvider::MiniMax
+                | AiProvider::OpenRouter
                 | AiProvider::OpenaiCompatible => list_openai_compatible_models(&client, config).await?,
                 AiProvider::Custom => {
                     if uses_anthropic_messages_api(config) {
@@ -3678,6 +3685,7 @@ pub async fn complete(request: &AiCompletionRequest) -> Result<String, String> {
                 | AiProvider::Qwen
                 | AiProvider::Zhipu
                 | AiProvider::MiniMax
+                | AiProvider::OpenRouter
                 | AiProvider::Ollama
                 | AiProvider::OpenaiCompatible => {
                     if request.config.api_style == AiApiStyle::Responses {
@@ -3741,6 +3749,7 @@ pub async fn stream(
         | AiProvider::Qwen
         | AiProvider::Zhipu
         | AiProvider::MiniMax
+        | AiProvider::OpenRouter
         | AiProvider::Ollama
         | AiProvider::OpenaiCompatible => {
             if request.config.api_style == AiApiStyle::Responses {

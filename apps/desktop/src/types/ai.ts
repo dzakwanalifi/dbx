@@ -7,6 +7,7 @@ export type AiProvider =
   | "qwen"
   | "zhipu"
   | "minimax"
+  | "openrouter"
   | "ollama"
   | "anthropic-compatible"
   | "openai-compatible"

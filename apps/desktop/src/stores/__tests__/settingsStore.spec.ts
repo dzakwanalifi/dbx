@@ -957,6 +957,18 @@ describe("settingsStore AI API key normalization", () => {
     expect(normalizeAiConfig({ endpoint: "https://api.z.ai/api/paas/v4", model: "glm-5.2" }).provider).toBe("zhipu");
   });
 
+  it("provides OpenRouter defaults and recognizes OpenRouter endpoints before model-name heuristics", () => {
+    expect(AI_PROVIDER_PRESETS.openrouter).toMatchObject({
+      provider: "openrouter",
+      endpoint: "https://openrouter.ai/api/v1",
+      model: "openai/gpt-4o-mini",
+      apiStyle: "completions",
+      authMethod: "bearer",
+      requiresApiKey: true,
+    });
+    expect(normalizeAiConfig({ endpoint: "https://openrouter.ai/api/v1", model: "deepseek/deepseek-chat" }).provider).toBe("openrouter");
+  });
+
   it("provides the current partner default models", () => {
     expect(AI_PROVIDER_PARTNER_PRESETS.find((preset) => preset.id === "jalapeno-cloud")).toMatchObject({
       model: "GLM-5.3",

@@ -642,6 +642,7 @@ mod tests {
             AiProvider::Deepseek,
             AiProvider::Qwen,
             AiProvider::MiniMax,
+            AiProvider::OpenRouter,
             AiProvider::Ollama,
         ] {
             let config = make_config(provider.clone());
